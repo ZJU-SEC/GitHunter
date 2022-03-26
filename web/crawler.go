@@ -38,6 +38,8 @@ func crawlWithOption(min, max int) {
 	queryURL := fmt.Sprintf("https://api.github.com/search/repositories?q=language:%s+stars:%d..%d",
 		config.LANGUAGE, min, max)
 
+	// fmt.Println(queryURL)
+
 	c.Visit(queryURL)
 
 	if resp.Count == 0 {

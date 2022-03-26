@@ -1,8 +1,9 @@
 package model
 
 import (
-	"fmt"
+	"GitHunter/config"
 	"sync"
+	"time"
 )
 
 // Repo struct map the schema of a repository
@@ -43,11 +44,16 @@ type Owner struct {
 }
 
 func (r *Repo) preprocess() {
-	// TODO owner
-	// TODO OrgProj
-	// TODO CreatedAt
-	// TODO UpdatedAt
-	fmt.Println(r)
+	timeCreate, err := time.Parse(time.RFC3339, r.RawCreatedAt)
+	if err == nil {
+		r.CreatedAt = timeCreate.Unix()
+	}
+	timeUpdate, err := time.Parse(time.RFC3339, r.RawUpdatedAt)
+	if err == nil {
+		r.UpdatedAt = timeUpdate.Unix()
+	}
+	r.Owner = r.RawOwner.Name
+	r.OrgProj = r.RawOwner.OwnerType == "Organization"
 }
 
 func CreateRepoBatch(repos []Repo) {
@@ -60,6 +66,7 @@ func CreateRepoBatch(repos []Repo) {
 	mutex.Lock()
 
 	// TODO create repos record
+	DB.CreateInBatches(repos, config.QUEUE_SIZE)
 
 	mutex.Unlock()
 }
