@@ -6,7 +6,8 @@ import (
 	"GitHunter/util"
 	"encoding/json"
 	"fmt"
-	"math"
+
+	// "math"
 
 	"github.com/gocolly/colly"
 	"github.com/shomali11/parallelizer"
@@ -33,7 +34,6 @@ func crawlWithOption(min, max int) {
 	c.OnResponse(func(r *colly.Response) {
 		json.Unmarshal(r.Body, &resp)
 	})
-
 
 	queryURL := fmt.Sprintf("https://api.github.com/search/repositories?q=language:%s+stars:%d..%d",
 		config.LANGUAGE, min, max)
