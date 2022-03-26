@@ -7,6 +7,8 @@ var Config *ini.File
 // APP
 var WORKER int
 var QUEUE_SIZE int
+var LANGUAGE string
+var MIN_STAR int
 
 // Web
 var GITHUB_TOKEN []string
@@ -28,6 +30,8 @@ func Init() {
 	}
 	WORKER = APPSection.Key("WORKER").MustInt(16)
 	QUEUE_SIZE = APPSection.Key("QUEUE_SIZE").MustInt(128)
+	LANGUAGE = APPSection.Key("LANGUAGE").String()
+	MIN_STAR = APPSection.Key("MIN_STAR").MustInt(20)
 
 	// load WEB section
 	WEBSection, err := Config.GetSection("WEB")
