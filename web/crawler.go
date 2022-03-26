@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"github.com/gocolly/colly"
 	"github.com/shomali11/parallelizer"
-	"math"
 )
 
 // Resp is a simple api response handler struct
@@ -20,7 +19,7 @@ type Resp struct {
 var MAX_STAR = 10000
 
 func Crawl() {
-	crawlWithOption(MAX_STAR, math.MaxInt)
+	crawlWithOption(MAX_STAR, 1<<23)
 	crawlWithOption(config.MIN_STAR, MAX_STAR)
 }
 
@@ -32,7 +31,8 @@ func crawlWithOption(min, max int) {
 		json.Unmarshal(r.Body, &resp)
 	})
 
-	queryURL := fmt.Sprintf("https://api.github.com/search/repositories?q=language:%s+stars:%d", config.LANGUAGE)
+	queryURL := fmt.Sprintf("https://api.github.com/search/repositories?q=language:%s+stars:%d..%d",
+		config.LANGUAGE, min, max)
 	c.Visit(queryURL)
 
 	if resp.Count == 0 {

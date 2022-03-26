@@ -48,7 +48,7 @@ func (r *Repo) preprocess() {
 
 func CreateRepoBatch(repos []Repo) {
 	// preprocess the records
-	for i := 0; i <= len(repos); i++ {
+	for i := 0; i < len(repos); i++ {
 		repos[i].preprocess()
 	}
 
