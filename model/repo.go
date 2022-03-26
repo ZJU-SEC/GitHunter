@@ -1,6 +1,9 @@
 package model
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 // Repo struct map the schema of a repository
 type Repo struct {
@@ -44,6 +47,7 @@ func (r *Repo) preprocess() {
 	// TODO OrgProj
 	// TODO CreatedAt
 	// TODO UpdatedAt
+	fmt.Println(r)
 }
 
 func CreateRepoBatch(repos []Repo) {
