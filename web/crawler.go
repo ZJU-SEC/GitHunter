@@ -46,9 +46,9 @@ func crawlWithOption(min, max int) {
 		return
 	} else if resp.Count > 1000 {
 		mid := (min + max) / 2
-		crawlWithOption(mid, max)
-		// solve duplication
-		crawlWithOption(min, mid-1)
+		// Making sure the granularity is 1
+		crawlWithOption(mid+1, max)
+		crawlWithOption(min, mid)
 		return
 	}
 

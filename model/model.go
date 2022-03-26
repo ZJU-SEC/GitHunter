@@ -3,8 +3,10 @@ package model
 import (
 	"GitHunter/config"
 	"fmt"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"gorm.io/gorm/logger"
 )
 
@@ -32,9 +34,14 @@ func Init() {
 		panic(err)
 	}
 
+	// resolve collision
+	DB.Clauses(clause.OnConflict{
+		UpdateAll: true,
+	}).Create(&Repo{})
 	// migrate schema
 	err = DB.AutoMigrate(&Repo{})
 	if err != nil {
 		panic(err)
 	}
+
 }
