@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/gocolly/colly v1.2.0
+	github.com/shomali11/parallelizer v0.0.0-20210506023428-ed2dd4732c78
 	gopkg.in/ini.v1 v1.66.4
 	gorm.io/driver/postgres v1.3.1
 	gorm.io/gorm v1.23.3

@@ -39,7 +39,7 @@ type Owner struct {
 	OwnerType string `json:"type"`
 }
 
-func (r *Repo) process() {
+func (r *Repo) preprocess() {
 	// TODO owner
 	// TODO OrgProj
 	// TODO CreatedAt
@@ -47,6 +47,11 @@ func (r *Repo) process() {
 }
 
 func CreateRepoBatch(repos []Repo) {
+	// preprocess the records
+	for i := 0; i <= len(repos); i++ {
+		repos[i].preprocess()
+	}
+
 	var mutex sync.Mutex
 	mutex.Lock()
 
