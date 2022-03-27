@@ -2,6 +2,10 @@
 
 [![Build](https://github.com/ZJU-SEC/GitHunter/actions/workflows/build.yml/badge.svg)](https://github.com/ZJU-SEC/GitHunter/actions/workflows/build.yml)
 
+`GitHunter` is a tiny yet powerful crawler infra to collect OSS projects on GitHub. It queries GitHub search API and persist the data into the Postgres database.
+
+[Check here](doc/README.md) to know what the collected data is.
+
 ## :gear: Prerequisite
 
 - Docker
