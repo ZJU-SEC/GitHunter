@@ -71,6 +71,17 @@ func crawlWithOption(min, max int) {
 	group.Wait()
 }
 
-func crawlWithPage(url string, page int) {
-	// TODO request with page
+func crawlWithPage(queryURL string, page int) {
+	fullURL := fmt.Sprintf(queryURL+"&page=%d", page)
+	var resp Resp
+	c := util.CommonCollector()
+	c.OnResponse(func(r *colly.Response) {
+		json.Unmarshal(r.Body, &resp)
+	})
+
+	// fmt.Println(fullURL)
+
+	c.Visit(fullURL)
+
+	model.CreateRepoBatch(resp.Repos)
 }
