@@ -9,6 +9,7 @@ var WORKER int
 var QUEUE_SIZE int
 var LANGUAGE string
 var MIN_STAR int
+var DEBUG bool
 
 // Web
 var GITHUB_TOKEN []string
@@ -32,6 +33,7 @@ func Init() {
 	QUEUE_SIZE = APPSection.Key("QUEUE_SIZE").MustInt(128)
 	LANGUAGE = APPSection.Key("LANGUAGE").String()
 	MIN_STAR = APPSection.Key("MIN_STAR").MustInt(20)
+	DEBUG = APPSection.Key("DEBUG").MustBool(false)
 
 	// load WEB section
 	WEBSection, err := Config.GetSection("WEB")

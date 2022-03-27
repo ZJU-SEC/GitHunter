@@ -65,7 +65,6 @@ func CreateRepoBatch(repos []Repo) {
 	var mutex sync.Mutex
 	mutex.Lock()
 
-	// TODO create repos record
 	DB.CreateInBatches(repos, config.QUEUE_SIZE)
 
 	mutex.Unlock()

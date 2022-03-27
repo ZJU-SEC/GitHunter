@@ -32,7 +32,9 @@ func CommonCollector() *colly.Collector {
 		if r.StatusCode == 404 {
 			return
 		}
-		//fmt.Println("[debug]", r.StatusCode, r.Request.URL)
+		if config.DEBUG {
+			fmt.Println("[debug]", r.StatusCode, r.Request.URL)
+		}
 		retryRequest(r.Request, config.TRYOUT)
 	})
 

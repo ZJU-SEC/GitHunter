@@ -38,7 +38,9 @@ func crawlWithOption(min, max int) {
 	queryURL := fmt.Sprintf("https://api.github.com/search/repositories?q=language:%s+stars:%d..%d",
 		config.LANGUAGE, min, max)
 
-	// fmt.Println(queryURL)
+	if config.DEBUG {
+		fmt.Println("visiting", queryURL)
+	}
 
 	c.Visit(queryURL)
 
@@ -79,8 +81,9 @@ func crawlWithPage(queryURL string, page int) {
 		json.Unmarshal(r.Body, &resp)
 	})
 
-	// fmt.Println(fullURL)
-
+	if config.DEBUG {
+		fmt.Println("visiting", fullURL)
+	}
 	c.Visit(fullURL)
 
 	model.CreateRepoBatch(resp.Repos)
