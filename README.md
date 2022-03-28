@@ -33,6 +33,22 @@ $ docker run \
 
 Prepare yourself a `config.ini` configuration according to `config.ini.tmpl`.
 
+### Parameters
+
+| Name          | Type    | In  |Description|
+|:-:            |:-:      |:-:  |:-:        |
+| WORKER        | integer | APP | Maximum number of parallel workers |
+| QUEUE_SIZE    | integer | APP | Maximum number of tuples to insert into database at a time |
+| LANGUAGE      | string  | APP | Targeted programming language |
+| MIN_STAR      | integer | APP | Minimum number of stars a repo gains |
+| GITHUB_TOKEN  | string  | WEB | Github token enabling usage of github API |
+| TRYOUT        | integer | WEB | Maximum number of retrying to request a page |
+| HOST          | string  | DB  | Database host address |
+| USER          | string  | DB  | Database user name |
+| PASSWORD      | string  | DB  | Database user password |
+| DBNAME        | string  | DB  | Database name |
+| PORT          | integer | DB  | Database port |
+
 ## :hammer_and_wrench: Build
 
 ```bash
