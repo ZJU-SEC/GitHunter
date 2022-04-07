@@ -20,12 +20,12 @@ func Clone() {
 	rows, _ := model.DB.Model(&model.Repo{}).Where("checked = ?", false).Rows()
 
 	for rows.Next() {
-		var s model.Repo
-		model.DB.ScanRows(rows, &s)
+		var r model.Repo
+		model.DB.ScanRows(rows, &r)
 
 		group.Add(func() {
-			s := s
-			cloneRepo(&s)
+			r := r
+			cloneRepo(&r)
 		})
 	}
 
@@ -35,7 +35,6 @@ func Clone() {
 
 func cloneRepo(repo *model.Repo) {
     if _, err := os.Stat(repo.LocalPath()); !os.IsNotExist(err) {
-		repo.Check()
 		return
 	}
 
@@ -51,6 +50,5 @@ func cloneRepo(repo *model.Repo) {
 		os.RemoveAll(repo.LocalPath())
 		return
 	}
-    repo.Check()
     fmt.Println(repo.Ref, "cloned")
 }

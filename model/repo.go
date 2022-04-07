@@ -37,9 +37,6 @@ type Repo struct {
 	RawOwner     Owner  `gorm:"-" json:"owner"`
 	RawCreatedAt string `gorm:"-" json:"created_at"`
 	RawUpdatedAt string `gorm:"-" json:"pushed_at"`
-
-    // cloned to local
-    Checked bool `gorm:"default:false"`
 }
 
 type Owner struct {
@@ -74,14 +71,6 @@ func CreateRepoBatch(repos []Repo) {
 	mutex.Unlock()
 }
 
-func (r *Repo) Check() {
-    var mutex sync.Mutex
-    mutex.Lock()
-
-    DB.Model(r).Update("checked", true)
-
-    mutex.Unlock()
-}
 
 func (r *Repo) GitURL() string {
     return "https://github.com/" + r.Ref + ".git"
