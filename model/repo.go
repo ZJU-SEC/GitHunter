@@ -4,6 +4,7 @@ import (
 	"GitHunter/config"
 	"sync"
 	"time"
+    "path"
 )
 
 // Repo struct map the schema of a repository
@@ -68,4 +69,13 @@ func CreateRepoBatch(repos []Repo) {
 	DB.CreateInBatches(repos, config.QUEUE_SIZE)
 
 	mutex.Unlock()
+}
+
+
+func (r *Repo) GitURL() string {
+    return "https://github.com/" + r.Ref + ".git"
+}
+
+func (r *Repo) LocalPath() string {
+	return path.Join(config.REPOS_PATH, r.Ref)
 }

@@ -9,11 +9,13 @@ var WORKER int
 var QUEUE_SIZE int
 var LANGUAGE string
 var MIN_STAR int
+var REPOS_PATH string
 var DEBUG bool
 
 // Web
 var GITHUB_TOKEN []string
 var TRYOUT int
+
 
 func Init() {
 	var err error
@@ -33,6 +35,7 @@ func Init() {
 	QUEUE_SIZE = APPSection.Key("QUEUE_SIZE").MustInt(128)
 	LANGUAGE = APPSection.Key("LANGUAGE").String()
 	MIN_STAR = APPSection.Key("MIN_STAR").MustInt(20)
+    REPOS_PATH = APPSection.Key("REPOS_PATH").String()
 	DEBUG = APPSection.Key("DEBUG").MustBool(false)
 
 	// load WEB section

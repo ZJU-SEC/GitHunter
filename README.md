@@ -55,6 +55,14 @@ $ go build CIHunter
 
 ## :rocket: Run
 
+To crawl the repositories' metadata:
+
 ```bash
-$ ./CIHunter
+$ ./GitHunter crawl
+```
+
+To clone the repositories:
+
+```bash
+$ ./GitHunter clone
 ```
