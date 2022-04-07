@@ -15,6 +15,12 @@ var DEBUG bool
 var GITHUB_TOKEN []string
 var TRYOUT int
 
+// Repo
+var CLONE_WORKER_NUMBER int
+var CLONE_LOWER_BOUND int
+var CLONE_STORAGE_PATH string
+var CLONE_BATCH_SIZE int
+
 func Init() {
 	var err error
 
@@ -42,6 +48,16 @@ func Init() {
 	}
 	GITHUB_TOKEN = WEBSection.Key("GITHUB_TOKEN").ValueWithShadows() // parse token list from config
 	TRYOUT = WEBSection.Key("TRYOUT").MustInt(5)
+
+	// load REPO section
+	REPOSection, err := Config.GetSection("REPO")
+	if err != nil {
+		panic(err)
+	}
+	CLONE_WORKER_NUMBER = REPOSection.Key("CLONE_WORKER_NUMBER").MustInt(16)
+	CLONE_LOWER_BOUND = REPOSection.Key("CLONE_LOWER_BOUND").MustInt(100)
+	CLONE_STORAGE_PATH = REPOSection.Key("CLONE_STORAGE_PATH").String()
+	CLONE_BATCH_SIZE = REPOSection.Key("CLONE_BATCH_SIZE").MustInt(256)
 }
 
 func ParseKey(section *ini.Section, key string) string {
