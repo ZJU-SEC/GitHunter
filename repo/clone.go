@@ -11,15 +11,13 @@ import (
 )
 
 func Clone() {
-	os.RemoveAll(config.CLONE_STORAGE_PATH)
-
 	group := parallelizer.NewGroup(
-		parallelizer.WithPoolSize(config.CLONE_WORKER_NUMBER),
-		parallelizer.WithJobQueueSize(config.CLONE_BATCH_SIZE),
+		parallelizer.WithPoolSize(config.WORKER),
+		parallelizer.WithJobQueueSize(config.QUEUE_SIZE),
 	)
 	defer group.Close()
 
-	rows, _ := model.DB.Model(&model.Repo{}).Where("star_count >= ? and language = ?", config.CLONE_LOWER_BOUND, config.LANGUAGE).Rows()
+	rows, _ := model.DB.Model(&model.Repo{}).Where("checked = ?", false).Rows()
 
 	for rows.Next() {
 		var s model.Repo
@@ -34,22 +32,15 @@ func Clone() {
 	group.Wait()
 }
 
-func getClonePath(repo *model.Repo) string {
-	return config.CLONE_STORAGE_PATH + "/" + "\"" + repo.Ref + "\""
-}
-
-func getCloneURL(repo *model.Repo) string {
-	addr := "https://github.com/" + repo.Ref + ".git"
-	return addr
-}
 
 func cloneRepo(repo *model.Repo) {
-	if config.DEBUG {
-		print("Cloning " + repo.Ref + " to " + getClonePath(repo) + "\n")
+    if _, err := os.Stat(repo.LocalPath()); !os.IsNotExist(err) {
+		repo.Check()
+		return
 	}
-	if _, err := git.PlainClone(getClonePath(repo), false, &git.CloneOptions{
-		URL:        getCloneURL(repo),
-		NoCheckout: true,
+
+	if _, err := git.PlainClone(repo.LocalPath(), false, &git.CloneOptions{
+		URL: repo.GitURL(),
 	}); err != nil {
 		switch err {
 		//case transport.ErrEmptyRemoteRepository, transport.ErrAuthenticationRequired:
@@ -57,7 +48,9 @@ func cloneRepo(repo *model.Repo) {
 		default:
 			fmt.Println("[ERR] cannot clone", repo.Ref, err)
 		}
-		os.RemoveAll(getClonePath(repo))
+		os.RemoveAll(repo.LocalPath())
 		return
 	}
+    repo.Check()
+    fmt.Println(repo.Ref, "cloned")
 }

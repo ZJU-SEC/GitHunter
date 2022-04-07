@@ -4,6 +4,7 @@ import (
 	"GitHunter/config"
 	"sync"
 	"time"
+    "path"
 )
 
 // Repo struct map the schema of a repository
@@ -36,6 +37,9 @@ type Repo struct {
 	RawOwner     Owner  `gorm:"-" json:"owner"`
 	RawCreatedAt string `gorm:"-" json:"created_at"`
 	RawUpdatedAt string `gorm:"-" json:"pushed_at"`
+
+    // cloned to local
+    Checked bool `gorm:"default:false"`
 }
 
 type Owner struct {
@@ -68,4 +72,21 @@ func CreateRepoBatch(repos []Repo) {
 	DB.CreateInBatches(repos, config.QUEUE_SIZE)
 
 	mutex.Unlock()
+}
+
+func (r *Repo) Check() {
+    var mutex sync.Mutex
+    mutex.Lock()
+
+    DB.Model(r).Update("checked", true)
+
+    mutex.Unlock()
+}
+
+func (r *Repo) GitURL() string {
+    return "https://github.com/" + r.Ref + ".git"
+}
+
+func (r *Repo) LocalPath() string {
+	return path.Join(config.REPOS_PATH, r.Ref)
 }
