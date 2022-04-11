@@ -39,7 +39,7 @@ type Repo struct {
 	RawUpdatedAt string `gorm:"-" json:"pushed_at"`
 
 	// spider check data, it's false before clone, and true after
-	IsChecked bool
+	Checked bool `gorm:"default:false"`
 }
 
 type Owner struct {
@@ -58,7 +58,6 @@ func (r *Repo) preprocess() {
 	}
 	r.Owner = r.RawOwner.Name
 	r.OrgProj = r.RawOwner.OwnerType == "Organization"
-	r.IsChecked = false
 }
 
 func CreateRepoBatch(repos []Repo) {
