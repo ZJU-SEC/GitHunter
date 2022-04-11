@@ -2,9 +2,9 @@ package model
 
 import (
 	"GitHunter/config"
+	"path"
 	"sync"
 	"time"
-    "path"
 )
 
 // Repo struct map the schema of a repository
@@ -37,6 +37,9 @@ type Repo struct {
 	RawOwner     Owner  `gorm:"-" json:"owner"`
 	RawCreatedAt string `gorm:"-" json:"created_at"`
 	RawUpdatedAt string `gorm:"-" json:"pushed_at"`
+
+	// spider check data, it's false before clone, and true after
+	IsChecked bool
 }
 
 type Owner struct {
@@ -55,6 +58,7 @@ func (r *Repo) preprocess() {
 	}
 	r.Owner = r.RawOwner.Name
 	r.OrgProj = r.RawOwner.OwnerType == "Organization"
+	r.IsChecked = false
 }
 
 func CreateRepoBatch(repos []Repo) {
@@ -71,9 +75,8 @@ func CreateRepoBatch(repos []Repo) {
 	mutex.Unlock()
 }
 
-
 func (r *Repo) GitURL() string {
-    return "https://github.com/" + r.Ref + ".git"
+	return "https://github.com/" + r.Ref + ".git"
 }
 
 func (r *Repo) LocalPath() string {

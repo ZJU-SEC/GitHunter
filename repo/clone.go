@@ -17,7 +17,7 @@ func Clone() {
 	)
 	defer group.Close()
 
-	rows, _ := model.DB.Model(&model.Repo{}).Rows()
+	rows, _ := model.DB.Model(&model.Repo{}).Where("is_checked = false").Rows()
 
 	for rows.Next() {
 		var r model.Repo
@@ -32,10 +32,13 @@ func Clone() {
 	group.Wait()
 }
 
-
 func cloneRepo(repo *model.Repo) {
-    if _, err := os.Stat(repo.LocalPath()); !os.IsNotExist(err) {
+	if _, err := os.Stat(repo.LocalPath()); !os.IsNotExist(err) {
 		return
+	}
+
+	if config.DEBUG {
+		fmt.Println("Cloning ", repo.Ref)
 	}
 
 	if _, err := git.PlainClone(repo.LocalPath(), false, &git.CloneOptions{
@@ -50,5 +53,6 @@ func cloneRepo(repo *model.Repo) {
 		os.RemoveAll(repo.LocalPath())
 		return
 	}
-    fmt.Println(repo.Ref, "cloned")
+	fmt.Println(repo.Ref, "cloned")
+	model.DB.Model(&model.Repo{}).Where("ref = ?", repo.Ref).Update("is_checked", true)
 }
