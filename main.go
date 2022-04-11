@@ -23,7 +23,4 @@ func main() {
     case "crawl":
         web.Crawl() 
     }
-    
-	web.Crawl()
-	repo.Clone()
 }
