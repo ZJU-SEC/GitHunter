@@ -17,7 +17,7 @@ func Clone() {
 	)
 	defer group.Close()
 
-	rows, _ := model.DB.Model(&model.Repo{}).Where("checked = ?", false).Rows()
+	rows, _ := model.DB.Model(&model.Repo{}).Rows()
 
 	for rows.Next() {
 		var r model.Repo
