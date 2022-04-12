@@ -17,7 +17,8 @@ func Clone() {
 	)
 	defer group.Close()
 
-	rows, _ := model.DB.Model(&model.Repo{}).Where("checked = ?", false).Order("random ()").Rows()
+	rows, _ := model.DB.Model(&model.Repo{}).Where("checked = ?", false).
+        Order("random ()").Limit(config.CLONE_LIMIT).Rows()
 
 	for rows.Next() {
 		var r model.Repo

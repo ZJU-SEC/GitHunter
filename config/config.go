@@ -11,6 +11,7 @@ var LANGUAGE string
 var MIN_STAR int
 var REPOS_PATH string
 var DEBUG bool
+var CLONE_LIMIT int
 
 // Web
 var GITHUB_TOKEN []string
@@ -37,6 +38,7 @@ func Init() {
 	MIN_STAR = APPSection.Key("MIN_STAR").MustInt(20)
     REPOS_PATH = APPSection.Key("REPOS_PATH").String()
 	DEBUG = APPSection.Key("DEBUG").MustBool(false)
+	CLONE_LIMIT = APPSection.Key("CLONE_LIMIT").MustInt(100)
 
 	// load WEB section
 	WEBSection, err := Config.GetSection("WEB")
