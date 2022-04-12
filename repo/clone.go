@@ -12,7 +12,7 @@ import (
 
 func Clone() {
 	group := parallelizer.NewGroup(
-		parallelizer.WithPoolSize(config.WORKER),
+		parallelizer.WithPoolSize(config.CLONE_WORKER),
 		parallelizer.WithJobQueueSize(config.QUEUE_SIZE),
 	)
 	defer group.Close()
