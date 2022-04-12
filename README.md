@@ -50,7 +50,7 @@ Prepare yourself a `config.ini` configuration according to `config.ini.tmpl`. Fo
 ## :hammer_and_wrench: Build
 
 ```bash
-$ go build GITHunter
+$ go build GitHunter
 ```
 
 ## :rocket: Run
