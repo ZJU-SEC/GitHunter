@@ -48,7 +48,7 @@ func crawlWithOption(min, max int) {
 
 	if resp.Count == 0 {
 		return
-	} else if resp.Count > 1000 {
+	} else if resp.Count > 1000 && min < max {
 		mid := (min + max) / 2
 		// Making sure the granularity is 1
 		crawlWithOption(mid+1, max)
