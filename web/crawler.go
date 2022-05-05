@@ -28,6 +28,8 @@ func Crawl() {
 
 // For the cursor, this function return the repos having star in range [min, max]
 func crawlWithOption(min, max int) {
+	if max < min { return }
+	
 	var resp Resp
 	// send one request, if bigger than 1000, divide them into two parts
 	c := util.CommonCollector()
