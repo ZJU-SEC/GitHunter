@@ -29,7 +29,7 @@ func CommonCollector() *colly.Collector {
 	})
 
 	c.OnError(func(r *colly.Response, err error) {
-		if r.StatusCode == 404 {
+		if r.StatusCode == 404 || r.StatusCode == 422 {
 			return
 		}
 		if config.DEBUG {
