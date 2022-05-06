@@ -59,7 +59,7 @@ func crawlWithOption(min, max int) {
 	model.CreateRepoBatch(resp.Repos)
 	pages := (resp.Count-1)/30 + 1
 	if pages > 100 {
-		page = 100
+		pages = 100
 	}
 
 	// iterate from page 2 to the final page
