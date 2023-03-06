@@ -6,9 +6,6 @@ import (
 	"GitHunter/util"
 	"encoding/json"
 	"fmt"
-
-	// "math"
-
 	"github.com/gocolly/colly"
 	"github.com/shomali11/parallelizer"
 )
@@ -28,8 +25,10 @@ func Crawl() {
 
 // For the cursor, this function return the repos having star in range [min, max]
 func crawlWithOption(min, max int) {
-	if max < min { return }
-	
+	if max < min {
+		return
+	}
+
 	var resp Resp
 	// send one request, if bigger than 1000, divide them into two parts
 	c := util.CommonCollector()
@@ -70,8 +69,9 @@ func crawlWithOption(min, max int) {
 	defer group.Close()
 	for p := 2; p <= pages; p++ {
 		p := p // move to thread local memory
-		group.Add(func() {
+		group.Add(func() error {
 			crawlWithPage(queryURL, p)
+			return nil
 		})
 	}
 

@@ -18,15 +18,16 @@ func Clone() {
 	defer group.Close()
 
 	rows, _ := model.DB.Model(&model.Repo{}).Where("checked = ?", false).
-        Order("random ()").Limit(config.CLONE_LIMIT).Rows()
+		Order("random ()").Limit(config.CLONE_LIMIT).Rows()
 
 	for rows.Next() {
 		var r model.Repo
 		model.DB.ScanRows(rows, &r)
 
-		group.Add(func() {
+		group.Add(func() error {
 			r := r
 			cloneRepo(&r)
+			return nil
 		})
 	}
 
